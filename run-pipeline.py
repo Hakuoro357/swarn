@@ -113,23 +113,38 @@ Execute your role. Create files. When done, say "AGENT_COMPLETE".
     print(f"  [{agent_name}] Running...", end="", flush=True)
     
     try:
-        result = subprocess.run(
-            [QWEN_CMD, prompt, "-y"],
-            capture_output=True,
-            text=True,
-            timeout=600,
-            cwd=str(SWARN_DIR)
-        )
+        # Write prompt to temp file to avoid command line length limits
+        import tempfile
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False, encoding='utf-8', dir=str(LOGS_DIR)) as tmp:
+            tmp.write(prompt)
+            prompt_file = tmp.name
+        
+        try:
+            # Use cmd.exe to pipe file into qwen stdin
+            cmd = f'type "{prompt_file}" | "{QWEN_CMD}" -y'
+            proc = subprocess.run(
+                cmd,
+                shell=True,
+                capture_output=True,
+                text=True,
+                timeout=600,
+                cwd=str(SWARN_DIR)
+            )
+            result_stdout = proc.stdout
+            result_stderr = proc.stderr
+            result_code = proc.returncode
+        finally:
+            Path(prompt_file).unlink(missing_ok=True)
         
         duration = int((datetime.now() - start).total_seconds())
         
         # Save output
         (LOGS_DIR / f"output-{agent_name}.txt").write_text(
-            result.stdout + "\n\n---STDERR---\n" + result.stderr,
+            result_stdout + "\n\n---STDERR---\n" + result_stderr,
             encoding='utf-8'
         )
         
-        if result.returncode == 0:
+        if result_code == 0:
             print(f" ✓ ({duration}s)")
             write_log(agent_name, "success", duration)
             return True
