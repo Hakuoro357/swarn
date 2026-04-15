@@ -87,11 +87,34 @@ AGENT_TIMEOUTS = {
 DEFAULT_TIMEOUT = 480  # 8 min
 
 def check_agent_completed(agent_name):
-    """Check if agent already completed (has output file)"""
+    """Check if agent already completed"""
+    # Method 1: Check log file for success entry
+    if LOG_FILE.exists():
+        try:
+            content = LOG_FILE.read_text(encoding='utf-8-sig')
+            for line in content.splitlines():
+                if agent_name in line and 'success' in line:
+                    return True
+        except Exception as e:
+            info(f"Log check error: {e}")
+    
+    # Method 2: Check output file exists and has content
     output_file = LOGS_DIR / f"output-{agent_name}.txt"
     if output_file.exists():
         content = output_file.read_text(encoding='utf-8', errors='replace')
-        return "AGENT_COMPLETE" in content
+        
+        # Agent explicitly said complete
+        if "AGENT_COMPLETE" in content:
+            return True
+        
+        # Agent produced substantial output without errors
+        if len(content) > 500 and "Traceback" not in content:
+            stderr_marker = content.find("---STDERR---")
+            if stderr_marker != -1:
+                stderr_content = content[stderr_marker:]
+                if len(stderr_content) < 200:
+                    return True
+    
     return False
 
 def run_agent(agent_name, agent_file, context="", config=None, resume=False):
@@ -245,8 +268,15 @@ def run_pipeline(target="all", resume=False):
     os.environ["PATH"] = npm_dir + os.pathsep + os.environ.get("PATH", "")
     
     info(f"qwen: {QWEN_CMD}")
+    info(f"LOG_FILE: {LOG_FILE}")
+    info(f"LOG_FILE exists: {LOG_FILE.exists()}")
     if resume:
         info("Resume mode: skipping completed agents")
+        # Show which agents will be skipped
+        for stage_info in PIPELINE.values():
+            for agent_name, _, _ in stage_info["agents"]:
+                if check_agent_completed(agent_name):
+                    info(f"  Will skip: {agent_name}")
     
     config = load_config()
     
