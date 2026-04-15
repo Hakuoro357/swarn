@@ -79,7 +79,27 @@ def write_log(agent, status, duration):
     with open(LOG_FILE, 'a', encoding='utf-8') as f:
         f.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
-def run_agent(agent_name, agent_file, context="", config=None):
+AGENT_TIMEOUTS = {
+    "N4-GameDev": 900,       # 15 min - generates lots of code
+    "N15-SeniorTS": 900,     # 15 min - deep review
+    "N2-ConceptDesigner": 600,  # 10 min - complex GDD
+}
+DEFAULT_TIMEOUT = 480  # 8 min
+
+def check_agent_completed(agent_name):
+    """Check if agent already completed (has output file)"""
+    output_file = LOGS_DIR / f"output-{agent_name}.txt"
+    if output_file.exists():
+        content = output_file.read_text(encoding='utf-8', errors='replace')
+        return "AGENT_COMPLETE" in content
+    return False
+
+def run_agent(agent_name, agent_file, context="", config=None, resume=False):
+    # Skip completed agents in resume mode
+    if resume and check_agent_completed(agent_name):
+        print(f"  [{agent_name}] Skipped (already completed) ✓")
+        return True
+    
     agent_path = AGENTS_DIR / agent_file
     if not agent_path.exists():
         fail(f"{agent_name} - not found: {agent_file}")
@@ -121,13 +141,16 @@ Execute your role. Create files. When done, say "AGENT_COMPLETE".
         
         try:
             # Use cmd.exe to pipe file into qwen stdin
+            timeout = AGENT_TIMEOUTS.get(agent_name, DEFAULT_TIMEOUT)
+            info(f"Timeout: {timeout}s")
+            
             cmd = f'type "{prompt_file}" | "{QWEN_CMD}" -y'
             proc = subprocess.run(
                 cmd,
                 shell=True,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                timeout=600,
+                timeout=timeout,
                 cwd=str(SWARN_DIR)
             )
             result_stdout = proc.stdout.decode('utf-8', errors='replace')
@@ -153,8 +176,9 @@ Execute your role. Create files. When done, say "AGENT_COMPLETE".
             return False
             
     except subprocess.TimeoutExpired:
-        print(" ✗ (timeout)")
-        write_log(agent_name, "timeout", 600)
+        timeout = AGENT_TIMEOUTS.get(agent_name, DEFAULT_TIMEOUT)
+        print(f" ✗ (timeout after {timeout}s)")
+        write_log(agent_name, "timeout", timeout)
         return False
     except FileNotFoundError:
         print(" ✗ (qwen not found)")
@@ -211,7 +235,7 @@ PIPELINE = {
     }
 }
 
-def run_pipeline(target="all"):
+def run_pipeline(target="all", resume=False):
     if not QWEN_CMD:
         fail("qwen not found! Install it: npm install -g @qwen-code/qwen-code")
         sys.exit(1)
@@ -221,6 +245,8 @@ def run_pipeline(target="all"):
     os.environ["PATH"] = npm_dir + os.pathsep + os.environ.get("PATH", "")
     
     info(f"qwen: {QWEN_CMD}")
+    if resume:
+        info("Resume mode: skipping completed agents")
     
     config = load_config()
     
@@ -238,7 +264,7 @@ def run_pipeline(target="all"):
         stage_msg(f"[Stage {stage_num}: {stage_info['name']}]")
         
         for agent_name, agent_file, context in stage_info["agents"]:
-            if not run_agent(agent_name, agent_file, context, config):
+            if not run_agent(agent_name, agent_file, context, config, resume):
                 fail(f"Pipeline FAILED at {agent_name}")
                 sys.exit(1)
         
@@ -253,7 +279,17 @@ def run_pipeline(target="all"):
 
 if __name__ == "__main__":
     target = "all"
-    if len(sys.argv) > 1 and sys.argv[1].startswith("--stage"):
-        target = sys.argv[1].split("=")[1] if "=" in sys.argv[1] else sys.argv[2] if len(sys.argv) > 2 else "all"
+    resume = False
     
-    run_pipeline(target)
+    for arg in sys.argv[1:]:
+        if arg.startswith("--stage"):
+            target = arg.split("=")[1] if "=" in arg else sys.argv[sys.argv.index(arg) + 1] if sys.argv.index(arg) + 1 < len(sys.argv) else "all"
+        elif arg == "--resume":
+            resume = True
+        elif arg == "--help":
+            print("Usage: python run-pipeline.py [--stage=N] [--resume]")
+            print("  --stage=N   Run only stage N (1-5)")
+            print("  --resume    Skip completed agents")
+            sys.exit(0)
+    
+    run_pipeline(target, resume)
