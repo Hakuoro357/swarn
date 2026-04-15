@@ -41,7 +41,7 @@ LOGS_DIR = SWARN_DIR / "logs"
 LOG_FILE = LOGS_DIR / "orchestrator.log"
 
 def load_config():
-    with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
+    with open(CONFIG_PATH, 'r', encoding='utf-8-sig') as f:
         return json.load(f)
 
 def write_log(agent, status, duration):
@@ -62,7 +62,7 @@ def run_agent(agent_name, agent_file, context="", config=None):
         write_log(agent_name, "failed", 0)
         return False
     
-    instructions = agent_path.read_text(encoding='utf-8')
+    instructions = agent_path.read_text(encoding='utf-8-sig')
     game_project = config.get("project_paths", {}).get("game_project", "../game") if config else "../game"
     
     prompt = f"""You are {agent_name} in Swarn multi-agent system.
