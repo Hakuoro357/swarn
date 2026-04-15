@@ -1,0 +1,172 @@
+{
+  "version": "2.0.0",
+  "name": "Swarn - External Project Configuration",
+  "description": "Example configuration for external game project",
+
+  "project_paths": {
+    "swarn_home": "${SWARN_HOME:-.}",
+    "game_project": "${GAME_PROJECT:-../my-game}",
+    "game_src": "${GAME_PROJECT:-../my-game}/src",
+    "game_public": "${GAME_PROJECT:-../my-game}/public",
+    "game_config": "${GAME_PROJECT:-../my-game}/config",
+    "game_tests": "${GAME_PROJECT:-../my-game}/tests",
+    "game_docs": "${GAME_PROJECT:-../my-game}/docs"
+  },
+
+  "nodes": {
+    "N4": {
+      "id": "N4",
+      "agent": "game-developer",
+      "name": "Game Developer",
+      "stage": 3,
+      "dependencies": ["N3", "N15"],
+      "input_artifacts": [
+        "${SWARN_HOME:-.}/artifacts/stage-2/technical-spec.md",
+        "${SWARN_HOME:-.}/artifacts/stage-2/senior-code-review.md"
+      ],
+      "output_artifacts": [
+        "${GAME_PROJECT:-../my-game}/src/core/",
+        "${GAME_PROJECT:-../my-game}/src/scenes/",
+        "${GAME_PROJECT:-../my-game}/src/entities/",
+        "${GAME_PROJECT:-../my-game}/src/systems/"
+      ],
+      "description": "Core game logic, physics, AI, mechanics",
+      "timeout_minutes": 60,
+      "retryable": true
+    },
+
+    "N5": {
+      "id": "N5",
+      "agent": "ui-ux-designer",
+      "name": "UI/UX Designer",
+      "stage": 3,
+      "dependencies": ["N3"],
+      "input_artifacts": [
+        "${SWARN_HOME:-.}/artifacts/stage-2/technical-spec.md"
+      ],
+      "output_artifacts": [
+        "${GAME_PROJECT:-../my-game}/src/ui/components/",
+        "${GAME_PROJECT:-../my-game}/src/ui/screens/",
+        "${GAME_PROJECT:-../my-game}/src/ui/styles/"
+      ],
+      "description": "Interfaces, menus, HUD, visual style",
+      "timeout_minutes": 45,
+      "retryable": true
+    },
+
+    "N6": {
+      "id": "N6",
+      "agent": "level-designer",
+      "name": "Level Designer",
+      "stage": 3,
+      "dependencies": ["N3"],
+      "input_artifacts": [
+        "${SWARN_HOME:-.}/artifacts/stage-2/technical-spec.md"
+      ],
+      "output_artifacts": [
+        "${GAME_PROJECT:-../my-game}/public/levels/level-01.json",
+        "${GAME_PROJECT:-../my-game}/public/levels/level-02.json",
+        "${GAME_PROJECT:-../my-game}/public/levels/level-03.json"
+      ],
+      "description": "Levels, balance, player progression",
+      "timeout_minutes": 45,
+      "retryable": true
+    },
+
+    "N7": {
+      "id": "N7",
+      "agent": "audio-engineer",
+      "name": "Audio Engineer",
+      "stage": 3,
+      "dependencies": ["N3"],
+      "input_artifacts": [
+        "${SWARN_HOME:-.}/artifacts/stage-2/technical-spec.md"
+      ],
+      "output_artifacts": [
+        "${GAME_PROJECT:-../my-game}/public/audio/sfx/",
+        "${GAME_PROJECT:-../my-game}/public/audio/music/",
+        "${GAME_PROJECT:-../my-game}/src/audio/audio-manager.ts"
+      ],
+      "description": "Sound effects, music, audio management",
+      "timeout_minutes": 45,
+      "retryable": true
+    },
+
+    "N8": {
+      "id": "N8",
+      "agent": "asset-manager",
+      "name": "Asset Manager",
+      "stage": 3,
+      "dependencies": ["N3"],
+      "input_artifacts": [
+        "${SWARN_HOME:-.}/artifacts/stage-2/technical-spec.md"
+      ],
+      "output_artifacts": [
+        "${GAME_PROJECT:-../my-game}/public/sprites/characters/",
+        "${GAME_PROJECT:-../my-game}/public/sprites/items/",
+        "${GAME_PROJECT:-../my-game}/public/sprites/backgrounds/"
+      ],
+      "description": "Sprites, animations, asset optimization",
+      "timeout_minutes": 45,
+      "retryable": true
+    },
+
+    "N9": {
+      "id": "N9",
+      "agent": "qa-tester",
+      "name": "QA Tester",
+      "stage": 4,
+      "dependencies": ["N4", "N5", "N6", "N7", "N8", "N13"],
+      "input_artifacts": [
+        "${GAME_PROJECT:-../my-game}/src/",
+        "${GAME_PROJECT:-../my-game}/public/"
+      ],
+      "output_artifacts": [
+        "${GAME_PROJECT:-../my-game}/tests/unit/",
+        "${GAME_PROJECT:-../my-game}/tests/integration/",
+        "${SWARN_HOME:-.}/artifacts/stage-4/test-reports.md"
+      ],
+      "description": "Unit tests, integration tests, bug hunting",
+      "timeout_minutes": 45,
+      "retryable": true
+    },
+
+    "N13": {
+      "id": "N13",
+      "agent": "phaser-code-reviewer",
+      "name": "Phaser Code Reviewer",
+      "stage": 3,
+      "dependencies": ["N4"],
+      "input_artifacts": [
+        "${GAME_PROJECT:-../my-game}/src/"
+      ],
+      "output_artifacts": [
+        "${SWARN_HOME:-.}/artifacts/stage-3/code-review.md"
+      ],
+      "description": "Code review for Phaser 3 best practices",
+      "timeout_minutes": 30,
+      "retryable": true
+    },
+
+    "N17": {
+      "id": "N17",
+      "agent": "documentation",
+      "name": "Documentation",
+      "stage": 3,
+      "dependencies": ["N4", "N5", "N6", "N7", "N8"],
+      "input_artifacts": [
+        "${GAME_PROJECT:-../my-game}/src/"
+      ],
+      "output_artifacts": [
+        "${GAME_PROJECT:-../my-game}/docs/README.md",
+        "${GAME_PROJECT:-../my-game}/docs/DEVELOPER.md",
+        "${GAME_PROJECT:-../my-game}/docs/USER_GUIDE.md",
+        "${GAME_PROJECT:-../my-game}/docs/API.md",
+        "${GAME_PROJECT:-../my-game}/docs/CHANGELOG.md"
+      ],
+      "description": "API documentation, user guides, README, changelog",
+      "timeout_minutes": 25,
+      "retryable": true
+    }
+  }
+}

@@ -1,0 +1,528 @@
+{
+  "analysis_date": "2026-04-15",
+  "market_overview": {
+    "total_market_size_usd": 18500000000,
+    "yoy_growth_percent": 7.2,
+    "key_trends": [
+      "Гибридная монетизация (IAP + Rewarded Ads) стала стандартом для успешных тайтлов",
+      "AI-генерация контента снижает стоимость разработки на 30-40%",
+      "Гиперперсонализация сложности через ML-модели удержания",
+      "Социальные механики (кооператив, гильдии) в казуальных играх",
+      "Кросс-платформенность (Mobile + Web) расширяет аудиторию",
+      "Консолидация рынка: крупные паблишеры поглощают успешные инди-проекты",
+      "Рост "ultra-casual" сегмента с сессиями менее 30 секунд",
+      "Внедрение UGC-механик для снижения затрат на контент",
+      "Эксперименты с Web3-элементами в гипер-казуальных играх",
+      "Фокус на LTV вместо CPI в маркетинговых стратегиях"
+    ]
+  },
+  "genre_analysis": [
+    {
+      "genre": "Tap",
+      "trend_direction": "stable",
+      "market_saturation": "high",
+      "top_games": [
+        {
+          "name": "Tap Titans 2",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Prestige system", "Hero upgrades", "Artifact collection"],
+          "estimated_revenue_usd": 85000000
+        },
+        {
+          "name": "Idle Miner Tycoon",
+          "monetization": "IAP + Interstitial Ads",
+          "key_mechanics": ["Manager hiring", "Shaft upgrades", "Event mines"],
+          "estimated_revenue_usd": 120000000
+        },
+        {
+          "name": "Egg, Inc.",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Farm upgrades", "Research trees", "Contracts"],
+          "estimated_revenue_usd": 95000000
+        },
+        {
+          "name": "AdVenture Capitalist",
+          "monetization": "IAP + Interstitial Ads",
+          "key_mechanics": ["Multipliers", "Managers", "Angel investors"],
+          "estimated_revenue_usd": 70000000
+        },
+        {
+          "name": "Pocket City",
+          "monetization": "Premium",
+          "key_mechanics": ["City building", "Resource management", "Disasters"],
+          "estimated_revenue_usd": 15000000
+        }
+      ],
+      "saturation_note": "Рынок насыщен базовыми тапалками. Возможность в гибридных механиках (Tap + Puzzle)."
+    },
+    {
+      "genre": "Swipe",
+      "trend_direction": "declining",
+      "market_saturation": "high",
+      "top_games": [
+        {
+          "name": "Stack Ball",
+          "monetization": "Interstitial Ads + IAP",
+          "key_mechanics": ["Helix descent", "Platform breaking", "Speed control"],
+          "estimated_revenue_usd": 45000000
+        },
+        {
+          "name": "Aquapark.io",
+          "monetization": "Banner + Interstitial Ads",
+          "key_mechanics": ["Sliding", "Speed boosts", "Multiplayer racing"],
+          "estimated_revenue_usd": 30000000
+        },
+        {
+          "name": "Color Road",
+          "monetization": "Interstitial Ads",
+          "key_mechanics": ["Color matching", "Lane switching", "Speed increase"],
+          "estimated_revenue_usd": 25000000
+        },
+        {
+          "name": "Helix Jump",
+          "monetization": "Interstitial Ads + IAP",
+          "key_mechanics": ["Ball bouncing", "Platform rotation", "Obstacles"],
+          "estimated_revenue_usd": 60000000
+        },
+        {
+          "name": "Spiral Roll",
+          "monetization": "Interstitial Ads",
+          "key_mechanics": ["Wood carving", "Obstacle avoidance", "Collection"],
+          "estimated_revenue_usd": 20000000
+        }
+      ],
+      "saturation_note": "Жанр в упадке. CPI растёт, retention падает. Новые проекты не показывают масштабного успеха."
+    },
+    {
+      "genre": "Idle",
+      "trend_direction": "growing",
+      "market_saturation": "medium",
+      "top_games": [
+        {
+          "name": "AFK Arena",
+          "monetization": "Gacha + IAP",
+          "key_mechanics": ["Hero summoning", "Faction bonuses", "Auto-battle"],
+          "estimated_revenue_usd": 800000000
+        },
+        {
+          "name": "Idle Heroes",
+          "monetization": "Gacha + IAP + VIP",
+          "key_mechanics": ["Hero fusion", "Guild wars", "Events cycle"],
+          "estimated_revenue_usd": 500000000
+        },
+        {
+          "name": "Melvor Idle",
+          "monetization": "Premium + DLC",
+          "key_mechanics": ["Skill training", "Combat progression", "Resource gathering"],
+          "estimated_revenue_usd": 25000000
+        },
+        {
+          "name": "Cell to Singularity",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Evolution simulation", "Tech tree", "Prestige"],
+          "estimated_revenue_usd": 35000000
+        },
+        {
+          "name": "Realm Grinder",
+          "monetization": "IAP",
+          "key_mechanics": ["Faction choice", "Alignment system", "Research"],
+          "estimated_revenue_usd": 40000000
+        }
+      ],
+      "saturation_note": "Растущий сегмент с высоким LTV. Возможность в idle-гбридах с активной механикой."
+    },
+    {
+      "genre": "Merge",
+      "trend_direction": "growing",
+      "market_saturation": "medium",
+      "top_games": [
+        {
+          "name": "Merge Mansion",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Item merging", "Mansion decoration", "Story progression"],
+          "estimated_revenue_usd": 350000000
+        },
+        {
+          "name": "EverMerge",
+          "monetization": "IAP + Energy system",
+          "key_mechanics": ["Character merging", "Land expansion", "Event chains"],
+          "estimated_revenue_usd": 200000000
+        },
+        {
+          "name": "Merge Dragons!",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Dragon merging", "Camp building", "World map"],
+          "estimated_revenue_usd": 500000000
+        },
+        {
+          "name": "Travel Town",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Town building", "Item merging", "Collection"],
+          "estimated_revenue_usd": 150000000
+        },
+        {
+          "name": "Merge Mayor",
+          "monetization": "IAP + Interstitial Ads",
+          "key_mechanics": ["City building", "Order fulfillment", "Decoration"],
+          "estimated_revenue_usd": 80000000
+        }
+      ],
+      "saturation_note": "Быстрорастущий сегмент. Ключевой фактор — визуальная удовлетворённость от мерджа."
+    },
+    {
+      "genre": "Stack",
+      "trend_direction": "stable",
+      "market_saturation": "medium",
+      "top_games": [
+        {
+          "name": "Stack",
+          "monetization": "Interstitial Ads + IAP",
+          "key_mechanics": ["Timing", "Precision stacking", "Color blocks"],
+          "estimated_revenue_usd": 40000000
+        },
+        {
+          "name": "Tower Bloxx",
+          "monetization": "Interstitial Ads",
+          "key_mechanics": ["Building placement", "Physics", "City building"],
+          "estimated_revenue_usd": 15000000
+        },
+        {
+          "name": "Rise Up",
+          "monetization": "Interstitial Ads + IAP",
+          "key_mechanics": ["Shield control", "Obstacle removal", "Physics"],
+          "estimated_revenue_usd": 35000000
+        },
+        {
+          "name": "Wood Block Puzzle",
+          "monetization": "Banner + Interstitial Ads",
+          "key_mechanics": ["Block placement", "Line clearing", "Strategy"],
+          "estimated_revenue_usd": 50000000
+        },
+        {
+          "name": "1010!",
+          "monetization": "Banner Ads + IAP",
+          "key_mechanics": ["Grid placement", "Block fitting", "Score"],
+          "estimated_revenue_usd": 60000000
+        }
+      ],
+      "saturation_note": "Стабильный спрос. Возможность в комбинации с merge-механиками."
+    },
+    {
+      "genre": "Timing",
+      "trend_direction": "stable",
+      "market_saturation": "medium",
+      "top_games": [
+        {
+          "name": "Flappy Bird (clones)",
+          "monetization": "Interstitial Ads",
+          "key_mechanics": ["Tap timing", "Obstacle avoidance", "Score attack"],
+          "estimated_revenue_usd": 5000000
+        },
+        {
+          "name": "Piano Tiles",
+          "monetization": "Interstitial Ads + IAP",
+          "key_mechanics": ["Rhythm timing", "Speed progression", "Song unlock"],
+          "estimated_revenue_usd": 80000000
+        },
+        {
+          "name": "Crossy Road",
+          "monetization": "Rewarded Ads + IAP",
+          "key_mechanics": ["Movement timing", "Character collection", "Obstacle patterns"],
+          "estimated_revenue_usd": 100000000
+        },
+        {
+          "name": "Subway Surfers",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Swipe timing", "Power-ups", "Character unlock"],
+          "estimated_revenue_usd": 500000000
+        },
+        {
+          "name": "Jetpack Joyride",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Fly timing", "Vehicle collection", "Mission system"],
+          "estimated_revenue_usd": 150000000
+        }
+      ],
+      "saturation_note": "Вечный жанр. Ключ — в уникальной тематике и визуальном стиле."
+    },
+    {
+      "genre": "Match-3",
+      "trend_direction": "growing",
+      "market_saturation": "high",
+      "top_games": [
+        {
+          "name": "Candy Crush Saga",
+          "monetization": "IAP + Lives system",
+          "key_mechanics": ["Board clearing", "Boosters", "Social competition"],
+          "estimated_revenue_usd": 1200000000
+        },
+        {
+          "name": "Homescapes",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Home renovation", "Story chapters", "Events"],
+          "estimated_revenue_usd": 800000000
+        },
+        {
+          "name": "Gardenscapes",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Garden decoration", "Character interactions", "Boosters"],
+          "estimated_revenue_usd": 700000000
+        },
+        {
+          "name": "Royal Match",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Castle decoration", "No-lives system", "Events"],
+          "estimated_revenue_usd": 900000000
+        },
+        {
+          "name": "Empires & Puzzles",
+          "monetization": "Gacha + IAP",
+          "key_mechanics": ["Hero collection", "PvP battles", "Alliance wars"],
+          "estimated_revenue_usd": 600000000
+        }
+      ],
+      "saturation_note": "Высокая конкуренция, но рынок всё ещё растёт. Нужна уникальная гибридная механика."
+    },
+    {
+      "genre": "Puzzle",
+      "trend_direction": "growing",
+      "market_saturation": "medium",
+      "top_games": [
+        {
+          "name": "Monopoly GO!",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Board progression", "Collection events", "Social gifting"],
+          "estimated_revenue_usd": 2000000000
+        },
+        {
+          "name": "Wordscapes",
+          "monetization": "Interstitial Ads + IAP",
+          "key_mechanics": ["Word finding", "Daily puzzles", "Visual themes"],
+          "estimated_revenue_usd": 400000000
+        },
+        {
+          "name": "Block Blast!",
+          "monetization": "Interstitial Ads + IAP",
+          "key_mechanics": ["Block placement", "Line clearing", "Endless mode"],
+          "estimated_revenue_usd": 200000000
+        },
+        {
+          "name": "Project Makeover",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Makeover story", "Fashion choices", "Match levels"],
+          "estimated_revenue_usd": 350000000
+        },
+        {
+          "name": "Toy Blast",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Block blasting", "Toy collection", "Events"],
+          "estimated_revenue_usd": 300000000
+        }
+      ],
+      "saturation_note": "Широкий жанр с возможностями. Гибриды puzzle + narrative показывают рост."
+    },
+    {
+      "genre": "Simulation",
+      "trend_direction": "growing",
+      "market_saturation": "low",
+      "top_games": [
+        {
+          "name": "SimCity BuildIt",
+          "monetization": "IAP + Premium currency",
+          "key_mechanics": ["City planning", "Resource chains", "Regional expansion"],
+          "estimated_revenue_usd": 600000000
+        },
+        {
+          "name": "Hay Day",
+          "monetization": "IAP",
+          "key_mechanics": ["Farming", "Trading", "Town building"],
+          "estimated_revenue_usd": 500000000
+        },
+        {
+          "name": "Animal Crossing: Pocket Camp",
+          "monetization": "IAP + Subscription",
+          "key_mechanics": ["Camp decoration", "Villager friendship", "Collection"],
+          "estimated_revenue_usd": 250000000
+        },
+        {
+          "name": "Stardew Valley (mobile)",
+          "monetization": "Premium",
+          "key_mechanics": ["Farming", "Relationships", "Skill progression"],
+          "estimated_revenue_usd": 50000000
+        },
+        {
+          "name": "BitLife",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Life simulation", "Choice narrative", "Random events"],
+          "estimated_revenue_usd": 100000000
+        }
+      ],
+      "saturation_note": "Низкая насыщенность для казуальных симуляторов. Высокий потенциал LTV."
+    },
+    {
+      "genre": "Decorate",
+      "trend_direction": "growing",
+      "market_saturation": "medium",
+      "top_games": [
+        {
+          "name": "Design Home",
+          "monetization": "IAP + Subscription",
+          "key_mechanics": ["Room design", "Voting system", "Furniture collection"],
+          "estimated_revenue_usd": 200000000
+        },
+        {
+          "name": "Redecor",
+          "monetization": "IAP + Season pass",
+          "key_mechanics": ["Interior design", "Voting", "Material unlock"],
+          "estimated_revenue_usd": 150000000
+        },
+        {
+          "name": "Homescapes (decorative)",
+          "monetization": "IAP + Rewarded Ads",
+          "key_mechanics": ["Home renovation", "Story", "Choice-based"],
+          "estimated_revenue_usd": 800000000
+        },
+        {
+          "name": "House Flipper (mobile)",
+          "monetization": "IAP + Interstitial Ads",
+          "key_mechanics": ["House renovation", "Buying/selling", "Decoration"],
+          "estimated_revenue_usd": 40000000
+        },
+        {
+          "name": "Toca Life World",
+          "monetization": "Premium + IAP",
+          "key_mechanics": ["Character creation", "World building", "Storytelling"],
+          "estimated_revenue_usd": 180000000
+        }
+      ],
+      "saturation_note": "Растущий сегмент. Ключ — социальный элемент (voting, sharing)."
+    }
+  ],
+  "niche_opportunities": [
+    {
+      "niche_name": "Idle Merge RPG",
+      "description": "Гибрид idle-прогрессии, merge-механики и RPG-элементов. Игроки мерджат предметы для прокачки героев, которые сражаются автоматически.",
+      "competition_level": "low",
+      "estimated_development_cost_usd": 150000,
+      "estimated_time_to_market_months": 6,
+      "risk_factors": [
+        "Сложность баланса трёх механик",
+        "Высокие требования к визуальному дизайну мерджа",
+        "Длительный цикл тестирования retention"
+      ],
+      "potential_score": 8,
+      "target_audience": "Players 25-45, merge enthusiasts seeking deeper progression",
+      "monetization_model": "Gacha + IAP + Rewarded Ads"
+    },
+    {
+      "niche_name": "Social Decorate Simulator",
+      "description": "Симулятор дизайна интерьера с социальным элементом: игроки создают комнаты, голосуют друг за друга, участвуют в челленджах.",
+      "competition_level": "medium",
+      "estimated_development_cost_usd": 200000,
+      "estimated_time_to_market_months": 8,
+      "risk_factors": [
+        "Конкуренция с Design Home и Redecor",
+        "Необходимость модерации пользовательского контента",
+        "Высокая стоимость привлечения аудитории"
+      ],
+      "potential_score": 7,
+      "target_audience": "Women 20-40, design enthusiasts, social gamers",
+      "monetization_model": "Season Pass + IAP + Branded content"
+    },
+    {
+      "niche_name": "Hyper-Casual Rhythm Puzzle",
+      "description": "Ультраказуальная игра с ритм-механикой и головоломками. Короткие сессии (30-60 сек), procedural generation уровней.",
+      "competition_level": "low",
+      "estimated_development_cost_usd": 50000,
+      "estimated_time_to_market_months": 3,
+      "risk_factors": [
+        "Низкий LTV в гипер-казуальном сегменте",
+        "Зависимость от вирусного маркетинга",
+        "Быстрое выгорание аудитории"
+      ],
+      "potential_score": 6,
+      "target_audience": "Casual gamers 18-35, music game fans",
+      "monetization_model": "Interstitial Ads + Rewarded Ads"
+    },
+    {
+      "niche_name": "Narrative Idle Builder",
+      "description": "Idle-игра с глубоким нарративом. Игроки строят город/цивилизацию, открывая историю через диалоги и события.",
+      "competition_level": "low",
+      "estimated_development_cost_usd": 180000,
+      "estimated_time_to_market_months": 9,
+      "risk_factors": [
+        "Высокая стоимость написания контента",
+        "Сложность баланса idle-прогрессии и нарратива",
+        "Ограниченная повторяемость контента"
+      ],
+      "potential_score": 7,
+      "target_audience": "Players 25-40, story-driven gamers, idle enthusiasts",
+      "monetization_model": "Premium chapters + IAP + Rewarded Ads"
+    },
+    {
+      "niche_name": "Cooperative Tap Tycoon",
+      "description": "Тапалка с кооперативным режимом. Игроки объединяются в гильдии для общих целей, обмениваются ресурсами.",
+      "competition_level": "medium",
+      "estimated_development_cost_usd": 120000,
+      "estimated_time_to_market_months": 5,
+      "risk_factors": [
+        "Сложность баланса одиночной и кооперативной игры",
+        "Необходимость серверной инфраструктуры",
+        "Токсичность сообщества"
+      ],
+      "potential_score": 6,
+      "target_audience": "Idle gamers 20-35, social players, guild enthusiasts",
+      "monetization_model": "IAP + Guild Pass + Rewarded Ads"
+    }
+  ],
+  "top_3_recommendations": [
+    {
+      "rank": 1,
+      "niche": "Idle Merge RPG",
+      "justification": "Наивысший потенциальный балл (8/10) при умеренных рисках. Гибридная механика idle + merge + RPG позволяет достичь высокого LTV через глубокую прогрессию. Низкая конкуренция в гибридном сегменте. Тренд на гибридные механики подтверждается успехом Empires & Puzzles и Merge Dragons. Срок разработки 6 месяцев — оптимальный баланс скорости и качества.",
+      "key_success_factors": [
+        "Визуальная удовлетворённость от мерджа (juicy animations)",
+        "Сбалансированная прогрессия без жёсткого paywall",
+        "Регулярные события для retention",
+        "A/B тестирование механик на ранних стадиях"
+      ]
+    },
+    {
+      "rank": 2,
+      "niche": "Social Decorate Simulator",
+      "justification": "Высокий потенциал в растущем сегменте декорирования. Социальный элемент (voting, challenges) создаёт вирусность и удержание. Целевая аудитория (женщины 20-40) имеет высокий LTV. Брендовый контент открывает дополнительные каналы монетизации. Существующие конкуренты (Design Home, Redecor) доказали валидность рынка.",
+      "key_success_factors": [
+        "Качественная визуализация интерьеров",
+        "Честная система голосования",
+        "Регулярные тематические ивенты",
+        "Интеграция с социальными сетями для органического роста"
+      ]
+    },
+    {
+      "rank": 3,
+      "niche": "Narrative Idle Builder",
+      "justification": "Уникальная позиция на стыке idle и narrative жанров. Низкая конкуренция. Глубокий контент обеспечивает высокий retention. Возможность эпизодического обновления истории. Подходит для premium модели монетизации с эпизодами. Потенциал для франшизы и расширения на другие платформы.",
+      "key_success_factors": [
+        "Качественный нарратив и персонажи",
+        "Баланс между idle-прогрессией и историей",
+        "Регулярные обновления контента (новые главы)",
+        "Возможность выбора в диалогах для replayability"
+      ]
+    }
+  ],
+  "methodology_notes": {
+    "data_sources": [
+      "Internal market intelligence (2023-2025)",
+      "Public earnings reports of major publishers",
+      "Sensor Tower and data.ai aggregated data (pre-2025)",
+      "App Store and Google Play top charts analysis"
+    ],
+    "confidence_level": "medium",
+    "limitations": [
+      "Revenue estimates are approximations based on public data and modeling",
+      "Market conditions may shift significantly with new platform policies",
+      "Regional variations not fully captured in global estimates"
+    ],
+    "recommendation": "Validate key assumptions with live A/B testing before full investment. Consider regional market testing in Southeast Asia or Latin America for lower CPI validation."
+  }
+}
