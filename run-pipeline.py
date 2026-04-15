@@ -125,13 +125,13 @@ Execute your role. Create files. When done, say "AGENT_COMPLETE".
             proc = subprocess.run(
                 cmd,
                 shell=True,
-                capture_output=True,
-                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
                 timeout=600,
                 cwd=str(SWARN_DIR)
             )
-            result_stdout = proc.stdout
-            result_stderr = proc.stderr
+            result_stdout = proc.stdout.decode('utf-8', errors='replace')
+            result_stderr = proc.stderr.decode('utf-8', errors='replace')
             result_code = proc.returncode
         finally:
             Path(prompt_file).unlink(missing_ok=True)
@@ -139,10 +139,8 @@ Execute your role. Create files. When done, say "AGENT_COMPLETE".
         duration = int((datetime.now() - start).total_seconds())
         
         # Save output
-        (LOGS_DIR / f"output-{agent_name}.txt").write_text(
-            result_stdout + "\n\n---STDERR---\n" + result_stderr,
-            encoding='utf-8'
-        )
+        out_text = (result_stdout or "") + "\n\n---STDERR---\n" + (result_stderr or "")
+        (LOGS_DIR / f"output-{agent_name}.txt").write_text(out_text, encoding='utf-8')
         
         if result_code == 0:
             print(f" ✓ ({duration}s)")
@@ -161,6 +159,10 @@ Execute your role. Create files. When done, say "AGENT_COMPLETE".
     except FileNotFoundError:
         print(" ✗ (qwen not found)")
         write_log(agent_name, "failed", 0, f"qwen not found. Tried: {QWEN_CMD}")
+        return False
+    except Exception as e:
+        print(f" ✗ (error: {e})")
+        write_log(agent_name, "failed", 0, str(e))
         return False
 
 PIPELINE = {
