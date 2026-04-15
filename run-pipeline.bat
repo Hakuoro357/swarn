@@ -9,6 +9,9 @@ echo.
 set "SWARN_DIR=%~dp0"
 set "SWARN_DIR=%SWARN_DIR:~0,-1%"
 
+REM Add npm to PATH (qwen installed via npm)
+set "PATH=%APPDATA%\npm;%PATH%"
+
 REM Check config
 if not exist "%SWARN_DIR%\config\orchestrator-config.json" (
     echo ERROR: Config not found!

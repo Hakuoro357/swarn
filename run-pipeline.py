@@ -8,6 +8,7 @@ import subprocess
 import sys
 import json
 import os
+import shutil
 from pathlib import Path
 from datetime import datetime
 
@@ -39,6 +40,29 @@ CONFIG_PATH = SWARN_DIR / "config" / "orchestrator-config.json"
 AGENTS_DIR = SWARN_DIR / ".qwen" / "agents"
 LOGS_DIR = SWARN_DIR / "logs"
 LOG_FILE = LOGS_DIR / "orchestrator.log"
+
+def find_qwen():
+    """Find qwen executable"""
+    # Try shutil.which first
+    qwen_path = shutil.which("qwen")
+    if qwen_path:
+        return qwen_path
+    
+    # Try common Windows locations
+    appdata = os.environ.get("APPDATA", "")
+    candidates = [
+        Path(appdata) / "npm" / "qwen.cmd",
+        Path(appdata) / "npm" / "qwen.exe",
+        Path("C:/Program Files/nodejs/qwen.cmd"),
+    ]
+    
+    for candidate in candidates:
+        if candidate.exists():
+            return str(candidate)
+    
+    return None
+
+QWEN_CMD = find_qwen()
 
 def load_config():
     with open(CONFIG_PATH, 'r', encoding='utf-8-sig') as f:
@@ -90,7 +114,7 @@ Execute your role. Create files. When done, say "AGENT_COMPLETE".
     
     try:
         result = subprocess.run(
-            ["qwen", prompt, "-y"],
+            [QWEN_CMD, prompt, "-y"],
             capture_output=True,
             text=True,
             timeout=600,
@@ -121,7 +145,7 @@ Execute your role. Create files. When done, say "AGENT_COMPLETE".
         return False
     except FileNotFoundError:
         print(" ✗ (qwen not found)")
-        write_log(agent_name, "failed", 0)
+        write_log(agent_name, "failed", 0, f"qwen not found. Tried: {QWEN_CMD}")
         return False
 
 PIPELINE = {
@@ -171,6 +195,16 @@ PIPELINE = {
 }
 
 def run_pipeline(target="all"):
+    if not QWEN_CMD:
+        fail("qwen not found! Install it: npm install -g @qwen-code/qwen-code")
+        sys.exit(1)
+    
+    # Add npm dir to PATH for subprocess
+    npm_dir = str(Path(QWEN_CMD).parent)
+    os.environ["PATH"] = npm_dir + os.pathsep + os.environ.get("PATH", "")
+    
+    info(f"qwen: {QWEN_CMD}")
+    
     config = load_config()
     
     stage_msg("=== Swarn Pipeline Runner ===")
