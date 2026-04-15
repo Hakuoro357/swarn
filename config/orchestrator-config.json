@@ -1,470 +1,611 @@
-{
-  "version": "2.0.0",
-  "name": "Swarn Game Pipeline",
-  "description": "Мульти-агентная система разработки игр с DAG-оркестрацией (21 агент)",
+﻿{
+    "version":  "2.0.0",
+    "name":  "Swarn Game Pipeline",
+    "description":  "РњСѓР»СЊС‚Рё-Р°РіРµРЅС‚РЅР°СЏ СЃРёСЃС‚РµРјР° СЂР°Р·СЂР°Р±РѕС‚РєРё РёРіСЂ СЃ DAG-РѕСЂРєРµСЃС‚СЂР°С†РёРµР№ (21 Р°РіРµРЅС‚)",
+    "project_paths":  {
+                          "swarn_home":  "c:\\pro\\Swarn",
+                          "game_project":  "C:\\pro\\games\\game01",
+                          "game_src":  "C:\\pro\\games\\game01\\src",
+                          "game_public":  "C:\\pro\\games\\game01\\public",
+                          "game_config":  "C:\\pro\\games\\game01\\config",
+                          "game_tests":  "C:\\pro\\games\\game01\\tests",
+                          "_comment":  "Set GAME_PROJECT env var or run setup.ps1 to configure paths"
+                      },
+    "settings":  {
+                     "max_parallel":  6,
+                     "max_retries":  3,
+                     "retry_delay_seconds":  30,
+                     "timeout_per_agent_minutes":  30,
+                     "circuit_breaker_threshold":  3,
+                     "checkpoint_after_each_stage":  true,
+                     "artifact_validation":  true
+                 },
+    "artifacts":  {
+                      "base_dir":  "artifacts",
+                      "stages":  [
+                                     "stage-1",
+                                     "stage-2",
+                                     "stage-3",
+                                     "stage-4",
+                                     "stage-5",
+                                     "final"
+                                 ],
+                      "chain_log":  "logs/artifacts/artifact-chain.json"
+                  },
+    "logging":  {
+                    "base_dir":  "logs",
+                    "orchestrator_log":  "logs/orchestrator.log",
+                    "agent_logs_dir":  "logs/agents",
+                    "format":  "json",
+                    "include_timestamp":  true,
+                    "include_metadata":  true
+                },
+    "pipeline":  {
+                     "stages":  [
+                                    {
+                                        "id":  "stage-1",
+                                        "name":  "РљРѕРЅС†РµРїС‚",
+                                        "parallel":  false,
+                                        "nodes":  [
+                                                      "N1",
+                                                      "N11",
+                                                      "N2"
+                                                  ]
+                                    },
+                                    {
+                                        "id":  "stage-2",
+                                        "name":  "РђСЂС…РёС‚РµРєС‚СѓСЂР°",
+                                        "parallel":  false,
+                                        "nodes":  [
+                                                      "N3",
+                                                      "N15"
+                                                  ]
+                                    },
+                                    {
+                                        "id":  "stage-3",
+                                        "name":  "РџР°СЂР°Р»Р»РµР»СЊРЅР°СЏ СЂР°Р·СЂР°Р±РѕС‚РєР°",
+                                        "parallel":  true,
+                                        "max_parallel":  6,
+                                        "nodes":  [
+                                                      "N4",
+                                                      "N5",
+                                                      "N6",
+                                                      "N7",
+                                                      "N8",
+                                                      "N13",
+                                                      "N17"
+                                                  ]
+                                    },
+                                    {
+                                        "id":  "stage-4",
+                                        "name":  "РљР°С‡РµСЃС‚РІРѕ Рё РѕРїС‚РёРјРёР·Р°С†РёСЏ",
+                                        "parallel":  false,
+                                        "nodes":  [
+                                                      "N9",
+                                                      "N10",
+                                                      "N14",
+                                                      "N18"
+                                                  ]
+                                    },
+                                    {
+                                        "id":  "stage-5",
+                                        "name":  "Р РµР»РёР· Рё Р·Р°РїСѓСЃРє",
+                                        "parallel":  false,
+                                        "nodes":  [
+                                                      "N16",
+                                                      "N19"
+                                                  ]
+                                    }
+                                ]
+                 },
+    "nodes":  {
+                  "N1":  {
+                             "id":  "N1",
+                             "agent":  "market-analyst",
+                             "name":  "Market Analyst",
+                             "stage":  1,
+                             "dependencies":  [
 
-  "project_paths": {
-    "swarn_home": "${SWARN_HOME:-.}",
-    "game_project": "${GAME_PROJECT:-../game}",
-    "game_src": "${GAME_PROJECT:-../game}/src",
-    "game_public": "${GAME_PROJECT:-../game}/public",
-    "game_config": "${GAME_PROJECT:-../game}/config",
-    "game_tests": "${GAME_PROJECT:-../game}/tests",
-    "_comment": "Set GAME_PROJECT env var or run setup.ps1 to configure paths"
-  },
+                                              ],
+                             "input_artifacts":  [
 
-  "settings": {
-    "max_parallel": 6,
-    "max_retries": 3,
-    "retry_delay_seconds": 30,
-    "timeout_per_agent_minutes": 30,
-    "circuit_breaker_threshold": 3,
-    "checkpoint_after_each_stage": true,
-    "artifact_validation": true
-  },
-
-  "artifacts": {
-    "base_dir": "artifacts",
-    "stages": ["stage-1", "stage-2", "stage-3", "stage-4", "stage-5", "final"],
-    "chain_log": "logs/artifacts/artifact-chain.json"
-  },
-
-  "logging": {
-    "base_dir": "logs",
-    "orchestrator_log": "logs/orchestrator.log",
-    "agent_logs_dir": "logs/agents",
-    "format": "json",
-    "include_timestamp": true,
-    "include_metadata": true
-  },
-
-  "pipeline": {
-    "stages": [
-      {
-        "id": "stage-1",
-        "name": "Концепт",
-        "parallel": false,
-        "nodes": ["N1", "N11", "N2"]
-      },
-      {
-        "id": "stage-2",
-        "name": "Архитектура",
-        "parallel": false,
-        "nodes": ["N3", "N15"]
-      },
-      {
-        "id": "stage-3",
-        "name": "Параллельная разработка",
-        "parallel": true,
-        "max_parallel": 6,
-        "nodes": ["N4", "N5", "N6", "N7", "N8", "N13", "N17"]
-      },
-      {
-        "id": "stage-4",
-        "name": "Качество и оптимизация",
-        "parallel": false,
-        "nodes": ["N9", "N10", "N14", "N18"]
-      },
-      {
-        "id": "stage-5",
-        "name": "Релиз и запуск",
-        "parallel": false,
-        "nodes": ["N16", "N19"]
-      }
-    ]
-  },
-
-  "nodes": {
-    "N1": {
-      "id": "N1",
-      "agent": "market-analyst",
-      "name": "Market Analyst",
-      "stage": 1,
-      "dependencies": [],
-      "input_artifacts": [],
-      "output_artifacts": ["artifacts/stage-1/market-analysis.json"],
-      "description": "Анализ рынка, конкурентов, поиск выгодных ниш",
-      "timeout_minutes": 20,
-      "retryable": true
-    },
-
-    "N2": {
-      "id": "N2",
-      "agent": "game-concept-designer",
-      "name": "Game Concept Designer",
-      "stage": 1,
-      "dependencies": ["N1"],
-      "input_artifacts": ["artifacts/stage-1/market-analysis.json"],
-      "output_artifacts": ["artifacts/stage-1/gdd.md"],
-      "description": "Разработка концепции игры, создание GDD",
-      "timeout_minutes": 30,
-      "retryable": true
-    },
-
-    "N3": {
-      "id": "N3",
-      "agent": "game-architect",
-      "name": "Game Architect",
-      "stage": 2,
-      "dependencies": ["N2"],
-      "input_artifacts": ["artifacts/stage-1/gdd.md"],
-      "output_artifacts": ["artifacts/stage-2/technical-spec.md"],
-      "description": "Архитектура игры, проектирование систем, выбор паттернов",
-      "timeout_minutes": 30,
-      "retryable": true
-    },
-
-    "N4": {
-      "id": "N4",
-      "agent": "game-developer",
-      "name": "Game Developer",
-      "stage": 3,
-      "dependencies": ["N3", "N15"],
-      "input_artifacts": ["artifacts/stage-2/technical-spec.md", "artifacts/stage-2/senior-code-review.md"],
-      "output_artifacts": ["artifacts/stage-3/src/"],
-      "description": "Реализация основной логики, физики, AI, механик",
-      "timeout_minutes": 60,
-      "retryable": true
-    },
-
-    "N5": {
-      "id": "N5",
-      "agent": "ui-ux-designer",
-      "name": "UI/UX Designer",
-      "stage": 3,
-      "dependencies": ["N3"],
-      "input_artifacts": ["artifacts/stage-2/technical-spec.md"],
-      "output_artifacts": ["artifacts/stage-3/ui/"],
-      "description": "Интерфейсы, меню, HUD, визуальный стиль",
-      "timeout_minutes": 45,
-      "retryable": true
-    },
-
-    "N6": {
-      "id": "N6",
-      "agent": "level-designer",
-      "name": "Level Designer",
-      "stage": 3,
-      "dependencies": ["N3"],
-      "input_artifacts": ["artifacts/stage-2/technical-spec.md"],
-      "output_artifacts": ["artifacts/stage-3/levels/"],
-      "description": "Уровни, баланс, прогрессия игрока",
-      "timeout_minutes": 45,
-      "retryable": true
-    },
-
-    "N7": {
-      "id": "N7",
-      "agent": "audio-engineer",
-      "name": "Audio Engineer",
-      "stage": 3,
-      "dependencies": ["N3"],
-      "input_artifacts": ["artifacts/stage-2/technical-spec.md"],
-      "output_artifacts": ["artifacts/stage-3/audio/"],
-      "description": "Звуковые эффекты, музыка, аудио менеджмент",
-      "timeout_minutes": 45,
-      "retryable": true
-    },
-
-    "N8": {
-      "id": "N8",
-      "agent": "asset-manager",
-      "name": "Asset Manager",
-      "stage": 3,
-      "dependencies": ["N3"],
-      "input_artifacts": ["artifacts/stage-2/technical-spec.md"],
-      "output_artifacts": ["artifacts/stage-3/assets/"],
-      "description": "Спрайты, анимации, оптимизация ассетов",
-      "timeout_minutes": 45,
-      "retryable": true
-    },
-
-    "N9": {
-      "id": "N9",
-      "agent": "qa-tester",
-      "name": "QA Tester",
-      "stage": 4,
-      "dependencies": ["N4", "N5", "N6", "N7", "N8", "N13"],
-      "input_artifacts": [
-        "artifacts/stage-3/src/",
-        "artifacts/stage-3/ui/",
-        "artifacts/stage-3/levels/",
-        "artifacts/stage-3/audio/",
-        "artifacts/stage-3/assets/",
-        "artifacts/stage-3/code-review.md"
-      ],
-      "output_artifacts": ["artifacts/stage-4/test-reports.md"],
-      "description": "Unit-тесты, интеграционные тесты, поиск багов",
-      "timeout_minutes": 45,
-      "retryable": true
-    },
-
-    "N10": {
-      "id": "N10",
-      "agent": "performance-profiler",
-      "name": "Performance Profiler",
-      "stage": 4,
-      "dependencies": ["N9"],
-      "input_artifacts": [
-        "artifacts/stage-3/src/",
-        "artifacts/stage-4/test-reports.md"
-      ],
-      "output_artifacts": ["artifacts/stage-4/perf-report.md"],
-      "description": "Анализ FPS, памяти, оптимизация производительности",
-      "timeout_minutes": 30,
-      "retryable": true
-    },
-
-    "N11": {
-      "id": "N11",
-      "agent": "niche-analyst",
-      "name": "Niche Analyst",
-      "stage": 1,
-      "dependencies": ["N1"],
-      "input_artifacts": ["artifacts/stage-1/market-analysis.json"],
-      "output_artifacts": ["artifacts/stage-1/niche-analysis.json"],
-      "description": "Глубокий анализ ниш Casual/Hyper-casual, SWOT, ROI-прогноз",
-      "timeout_minutes": 25,
-      "retryable": true
-    },
-
-    "N12": {
-      "id": "N12",
-      "agent": "niche-monitor",
-      "name": "Niche Monitor",
-      "stage": 0,
-      "dependencies": ["N11"],
-      "input_artifacts": ["artifacts/stage-1/niche-analysis.json"],
-      "output_artifacts": ["artifacts/stage-1/niche-monitor.json"],
-      "description": "Мониторинг ниш, детекция сигналов, алерты",
-      "timeout_minutes": 15,
-      "retryable": true,
-      "background": true
-    },
-
-    "N13": {
-      "id": "N13",
-      "agent": "phaser-code-reviewer",
-      "name": "Phaser Code Reviewer",
-      "stage": 3,
-      "dependencies": ["N4"],
-      "input_artifacts": ["artifacts/stage-3/src/"],
-      "output_artifacts": ["artifacts/stage-3/code-review.md"],
-      "description": "Ревью кода на соответствие Phaser 3 best practices",
-      "timeout_minutes": 30,
-      "retryable": true
-    },
-
-    "N14": {
-      "id": "N14",
-      "agent": "phaser-performance-profiler",
-      "name": "Phaser Performance Profiler",
-      "stage": 4,
-      "dependencies": ["N9", "N13"],
-      "input_artifacts": [
-        "artifacts/stage-3/src/",
-        "artifacts/stage-4/test-reports.md",
-        "artifacts/stage-3/code-review.md"
-      ],
-      "output_artifacts": ["artifacts/stage-4/phaser-perf-report.md"],
-      "description": "Анализ Phaser-specific bottlenecks, draw calls, batching",
-      "timeout_minutes": 30,
-      "retryable": true
-    },
-
-    "N15": {
-      "id": "N15",
-      "agent": "senior-typescript-game-developer",
-      "name": "Senior TypeScript Game Developer",
-      "stage": 2,
-      "dependencies": ["N3"],
-      "input_artifacts": ["artifacts/stage-2/technical-spec.md"],
-      "output_artifacts": ["artifacts/stage-2/senior-code-review.md"],
-      "description": "Архитектурный ревью, TypeScript best practices, design patterns",
-      "timeout_minutes": 40,
-      "retryable": true
-    },
-
-    "N16": {
-      "id": "N16",
-      "agent": "git-devops",
-      "name": "Git/DevOps",
-      "stage": 5,
-      "dependencies": ["N9", "N10", "N14"],
-      "input_artifacts": [
-        "artifacts/stage-3/src/",
-        "artifacts/stage-4/test-reports.md",
-        "artifacts/stage-4/perf-report.md",
-        "artifacts/stage-4/phaser-perf-report.md"
-      ],
-      "output_artifacts": [
-        "artifacts/final/deployment/deploy-config.json",
-        "artifacts/final/deployment/.github/workflows/ci.yml",
-        "artifacts/final/deployment/scripts/build.sh",
-        "artifacts/final/deployment/scripts/deploy.sh"
-      ],
-      "description": "Git репозиторий, CI/CD pipeline, build automation",
-      "timeout_minutes": 20,
-      "retryable": true
-    },
-
-    "N17": {
-      "id": "N17",
-      "agent": "documentation",
-      "name": "Documentation",
-      "stage": 3,
-      "dependencies": ["N4", "N5", "N6", "N7", "N8"],
-      "input_artifacts": [
-        "artifacts/stage-3/src/",
-        "artifacts/stage-3/ui/",
-        "artifacts/stage-3/levels/",
-        "artifacts/stage-3/audio/",
-        "artifacts/stage-3/assets/"
-      ],
-      "output_artifacts": [
-        "artifacts/final/documentation/README.md",
-        "artifacts/final/documentation/DEVELOPER.md",
-        "artifacts/final/documentation/USER_GUIDE.md",
-        "artifacts/final/documentation/API.md",
-        "artifacts/final/documentation/CHANGELOG.md"
-      ],
-      "description": "API documentation, user guides, README, changelog",
-      "timeout_minutes": 25,
-      "retryable": true
-    },
-
-    "N18": {
-      "id": "N18",
-      "agent": "localization",
-      "name": "Localization",
-      "stage": 4,
-      "dependencies": ["N5", "N17"],
-      "input_artifacts": [
-        "artifacts/stage-3/ui/",
-        "artifacts/final/documentation/"
-      ],
-      "output_artifacts": [
-        "artifacts/final/localization/i18n-config.json",
-        "artifacts/final/localization/locales/en.json",
-        "artifacts/final/localization/locales/ru.json",
-        "artifacts/final/localization/locales/es.json",
-        "artifacts/final/localization/locales/zh.json",
-        "artifacts/final/localization/locales/ja.json"
-      ],
-      "description": "i18n архитектура, перевод UI и сообщений",
-      "timeout_minutes": 30,
-      "retryable": true
-    },
-
-    "N19": {
-      "id": "N19",
-      "agent": "marketing-launch",
-      "name": "Marketing/Launch",
-      "stage": 5,
-      "dependencies": ["N16", "N17", "N18"],
-      "input_artifacts": [
-        "artifacts/final/deployment/",
-        "artifacts/final/documentation/",
-        "artifacts/final/localization/"
-      ],
-      "output_artifacts": [
-        "artifacts/final/marketing/strategy.md",
-        "artifacts/final/marketing/app-store-metadata.json",
-        "artifacts/final/marketing/landing-page/index.html",
-        "artifacts/final/marketing/social-posts.md",
-        "artifacts/final/marketing/press-kit.md",
-        "artifacts/final/marketing/launch-checklist.md"
-      ],
-      "description": "Маркетинг, ASO, промо-материалы, запуск",
-      "timeout_minutes": 35,
-      "retryable": true
-    },
-
-    "N20": {
-      "id": "N20",
-      "agent": "support",
-      "name": "Support",
-      "stage": 5,
-      "dependencies": ["N19"],
-      "input_artifacts": ["artifacts/final/marketing/"],
-      "output_artifacts": [
-        "artifacts/support/faq.md",
-        "artifacts/support/knowledge-base.md",
-        "artifacts/support/common-issues.md",
-        "artifacts/support/feedback-report.md"
-      ],
-      "description": "User support, community management, feedback",
-      "timeout_minutes": 15,
-      "retryable": true,
-      "background": true
-    },
-
-    "learning-agent": {
-      "id": "learning-agent",
-      "agent": "learning-agent",
-      "name": "Learning Agent",
-      "stage": 0,
-      "dependencies": ["stage-1", "stage-2", "stage-3", "stage-4"],
-      "input_artifacts": ["logs/artifacts/artifact-chain.json"],
-      "output_artifacts": ["knowledge-base/cases/CASE-*.md"],
-      "description": "Анализ результатов, сохранение cases, обновление knowledge-base",
-      "timeout_minutes": 15,
-      "retryable": true,
-      "background": true
-    }
-  },
-
-  "parallel_groups": {
-    "stage-3-dev": {
-      "nodes": ["N4", "N5", "N6", "N7", "N8", "N13", "N17"],
-      "max_concurrent": 6,
-      "merge_artifacts": true,
-      "merge_target": "artifacts/stage-3/game-build/"
-    }
-  },
-
-  "checkpoints": {
-    "enabled": true,
-    "dir": "artifacts/checkpoints",
-    "auto_save_after": ["stage-1", "stage-2", "stage-3", "stage-4", "stage-5"]
-  },
-
-  "error_handling": {
-    "circuit_breaker": {
-      "enabled": true,
-      "threshold": 3,
-      "action": "halt_pipeline"
-    },
-    "retry": {
-      "enabled": true,
-      "max_attempts": 3,
-      "backoff_multiplier": 2
-    },
-    "escalation": {
-      "on_circuit_break": "notify_and_preserve_state",
-      "on_timeout": "retry_or_skip"
-    }
-  },
-
-  "knowledge_base": {
-    "enabled": true,
-    "base_dir": "knowledge-base",
-    "learning_agent": {
-      "agent_file": "learning-agent.md",
-      "run_after_stages": ["stage-1", "stage-2", "stage-3", "stage-4"],
-      "timeout_minutes": 15
-    },
-    "pre_task_integration": {
-      "enabled": true,
-      "max_success_cases": 3,
-      "max_failure_cases": 3,
-      "search_algorithm": "knowledge-base/SEARCH.md"
-    },
-    "case_format": {
-      "success_dir": "knowledge-base/cases/success",
-      "failure_dir": "knowledge-base/cases/failure",
-      "patterns_dir": "knowledge-base/patterns",
-      "anti_patterns_dir": "knowledge-base/anti-patterns"
-    }
-  }
+                                                 ],
+                             "output_artifacts":  [
+                                                      "artifacts/stage-1/market-analysis.json"
+                                                  ],
+                             "description":  "РђРЅР°Р»РёР· СЂС‹РЅРєР°, РєРѕРЅРєСѓСЂРµРЅС‚РѕРІ, РїРѕРёСЃРє РІС‹РіРѕРґРЅС‹С… РЅРёС€",
+                             "timeout_minutes":  20,
+                             "retryable":  true
+                         },
+                  "N2":  {
+                             "id":  "N2",
+                             "agent":  "game-concept-designer",
+                             "name":  "Game Concept Designer",
+                             "stage":  1,
+                             "dependencies":  [
+                                                  "N1"
+                                              ],
+                             "input_artifacts":  [
+                                                     "artifacts/stage-1/market-analysis.json"
+                                                 ],
+                             "output_artifacts":  [
+                                                      "artifacts/stage-1/gdd.md"
+                                                  ],
+                             "description":  "Р Р°Р·СЂР°Р±РѕС‚РєР° РєРѕРЅС†РµРїС†РёРё РёРіСЂС‹, СЃРѕР·РґР°РЅРёРµ GDD",
+                             "timeout_minutes":  30,
+                             "retryable":  true
+                         },
+                  "N3":  {
+                             "id":  "N3",
+                             "agent":  "game-architect",
+                             "name":  "Game Architect",
+                             "stage":  2,
+                             "dependencies":  [
+                                                  "N2"
+                                              ],
+                             "input_artifacts":  [
+                                                     "artifacts/stage-1/gdd.md"
+                                                 ],
+                             "output_artifacts":  [
+                                                      "artifacts/stage-2/technical-spec.md"
+                                                  ],
+                             "description":  "РђСЂС…РёС‚РµРєС‚СѓСЂР° РёРіСЂС‹, РїСЂРѕРµРєС‚РёСЂРѕРІР°РЅРёРµ СЃРёСЃС‚РµРј, РІС‹Р±РѕСЂ РїР°С‚С‚РµСЂРЅРѕРІ",
+                             "timeout_minutes":  30,
+                             "retryable":  true
+                         },
+                  "N4":  {
+                             "id":  "N4",
+                             "agent":  "game-developer",
+                             "name":  "Game Developer",
+                             "stage":  3,
+                             "dependencies":  [
+                                                  "N3",
+                                                  "N15"
+                                              ],
+                             "input_artifacts":  [
+                                                     "artifacts/stage-2/technical-spec.md",
+                                                     "artifacts/stage-2/senior-code-review.md"
+                                                 ],
+                             "output_artifacts":  [
+                                                      "artifacts/stage-3/src/"
+                                                  ],
+                             "description":  "Р РµР°Р»РёР·Р°С†РёСЏ РѕСЃРЅРѕРІРЅРѕР№ Р»РѕРіРёРєРё, С„РёР·РёРєРё, AI, РјРµС…Р°РЅРёРє",
+                             "timeout_minutes":  60,
+                             "retryable":  true
+                         },
+                  "N5":  {
+                             "id":  "N5",
+                             "agent":  "ui-ux-designer",
+                             "name":  "UI/UX Designer",
+                             "stage":  3,
+                             "dependencies":  [
+                                                  "N3"
+                                              ],
+                             "input_artifacts":  [
+                                                     "artifacts/stage-2/technical-spec.md"
+                                                 ],
+                             "output_artifacts":  [
+                                                      "artifacts/stage-3/ui/"
+                                                  ],
+                             "description":  "РРЅС‚РµСЂС„РµР№СЃС‹, РјРµРЅСЋ, HUD, РІРёР·СѓР°Р»СЊРЅС‹Р№ СЃС‚РёР»СЊ",
+                             "timeout_minutes":  45,
+                             "retryable":  true
+                         },
+                  "N6":  {
+                             "id":  "N6",
+                             "agent":  "level-designer",
+                             "name":  "Level Designer",
+                             "stage":  3,
+                             "dependencies":  [
+                                                  "N3"
+                                              ],
+                             "input_artifacts":  [
+                                                     "artifacts/stage-2/technical-spec.md"
+                                                 ],
+                             "output_artifacts":  [
+                                                      "artifacts/stage-3/levels/"
+                                                  ],
+                             "description":  "РЈСЂРѕРІРЅРё, Р±Р°Р»Р°РЅСЃ, РїСЂРѕРіСЂРµСЃСЃРёСЏ РёРіСЂРѕРєР°",
+                             "timeout_minutes":  45,
+                             "retryable":  true
+                         },
+                  "N7":  {
+                             "id":  "N7",
+                             "agent":  "audio-engineer",
+                             "name":  "Audio Engineer",
+                             "stage":  3,
+                             "dependencies":  [
+                                                  "N3"
+                                              ],
+                             "input_artifacts":  [
+                                                     "artifacts/stage-2/technical-spec.md"
+                                                 ],
+                             "output_artifacts":  [
+                                                      "artifacts/stage-3/audio/"
+                                                  ],
+                             "description":  "Р—РІСѓРєРѕРІС‹Рµ СЌС„С„РµРєС‚С‹, РјСѓР·С‹РєР°, Р°СѓРґРёРѕ РјРµРЅРµРґР¶РјРµРЅС‚",
+                             "timeout_minutes":  45,
+                             "retryable":  true
+                         },
+                  "N8":  {
+                             "id":  "N8",
+                             "agent":  "asset-manager",
+                             "name":  "Asset Manager",
+                             "stage":  3,
+                             "dependencies":  [
+                                                  "N3"
+                                              ],
+                             "input_artifacts":  [
+                                                     "artifacts/stage-2/technical-spec.md"
+                                                 ],
+                             "output_artifacts":  [
+                                                      "artifacts/stage-3/assets/"
+                                                  ],
+                             "description":  "РЎРїСЂР°Р№С‚С‹, Р°РЅРёРјР°С†РёРё, РѕРїС‚РёРјРёР·Р°С†РёСЏ Р°СЃСЃРµС‚РѕРІ",
+                             "timeout_minutes":  45,
+                             "retryable":  true
+                         },
+                  "N9":  {
+                             "id":  "N9",
+                             "agent":  "qa-tester",
+                             "name":  "QA Tester",
+                             "stage":  4,
+                             "dependencies":  [
+                                                  "N4",
+                                                  "N5",
+                                                  "N6",
+                                                  "N7",
+                                                  "N8",
+                                                  "N13"
+                                              ],
+                             "input_artifacts":  [
+                                                     "artifacts/stage-3/src/",
+                                                     "artifacts/stage-3/ui/",
+                                                     "artifacts/stage-3/levels/",
+                                                     "artifacts/stage-3/audio/",
+                                                     "artifacts/stage-3/assets/",
+                                                     "artifacts/stage-3/code-review.md"
+                                                 ],
+                             "output_artifacts":  [
+                                                      "artifacts/stage-4/test-reports.md"
+                                                  ],
+                             "description":  "Unit-С‚РµСЃС‚С‹, РёРЅС‚РµРіСЂР°С†РёРѕРЅРЅС‹Рµ С‚РµСЃС‚С‹, РїРѕРёСЃРє Р±Р°РіРѕРІ",
+                             "timeout_minutes":  45,
+                             "retryable":  true
+                         },
+                  "N10":  {
+                              "id":  "N10",
+                              "agent":  "performance-profiler",
+                              "name":  "Performance Profiler",
+                              "stage":  4,
+                              "dependencies":  [
+                                                   "N9"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/stage-3/src/",
+                                                      "artifacts/stage-4/test-reports.md"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/stage-4/perf-report.md"
+                                                   ],
+                              "description":  "РђРЅР°Р»РёР· FPS, РїР°РјСЏС‚Рё, РѕРїС‚РёРјРёР·Р°С†РёСЏ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё",
+                              "timeout_minutes":  30,
+                              "retryable":  true
+                          },
+                  "N11":  {
+                              "id":  "N11",
+                              "agent":  "niche-analyst",
+                              "name":  "Niche Analyst",
+                              "stage":  1,
+                              "dependencies":  [
+                                                   "N1"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/stage-1/market-analysis.json"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/stage-1/niche-analysis.json"
+                                                   ],
+                              "description":  "Р“Р»СѓР±РѕРєРёР№ Р°РЅР°Р»РёР· РЅРёС€ Casual/Hyper-casual, SWOT, ROI-РїСЂРѕРіРЅРѕР·",
+                              "timeout_minutes":  25,
+                              "retryable":  true
+                          },
+                  "N12":  {
+                              "id":  "N12",
+                              "agent":  "niche-monitor",
+                              "name":  "Niche Monitor",
+                              "stage":  0,
+                              "dependencies":  [
+                                                   "N11"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/stage-1/niche-analysis.json"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/stage-1/niche-monitor.json"
+                                                   ],
+                              "description":  "РњРѕРЅРёС‚РѕСЂРёРЅРі РЅРёС€, РґРµС‚РµРєС†РёСЏ СЃРёРіРЅР°Р»РѕРІ, Р°Р»РµСЂС‚С‹",
+                              "timeout_minutes":  15,
+                              "retryable":  true,
+                              "background":  true
+                          },
+                  "N13":  {
+                              "id":  "N13",
+                              "agent":  "phaser-code-reviewer",
+                              "name":  "Phaser Code Reviewer",
+                              "stage":  3,
+                              "dependencies":  [
+                                                   "N4"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/stage-3/src/"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/stage-3/code-review.md"
+                                                   ],
+                              "description":  "Р РµРІСЊСЋ РєРѕРґР° РЅР° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ Phaser 3 best practices",
+                              "timeout_minutes":  30,
+                              "retryable":  true
+                          },
+                  "N14":  {
+                              "id":  "N14",
+                              "agent":  "phaser-performance-profiler",
+                              "name":  "Phaser Performance Profiler",
+                              "stage":  4,
+                              "dependencies":  [
+                                                   "N9",
+                                                   "N13"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/stage-3/src/",
+                                                      "artifacts/stage-4/test-reports.md",
+                                                      "artifacts/stage-3/code-review.md"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/stage-4/phaser-perf-report.md"
+                                                   ],
+                              "description":  "РђРЅР°Р»РёР· Phaser-specific bottlenecks, draw calls, batching",
+                              "timeout_minutes":  30,
+                              "retryable":  true
+                          },
+                  "N15":  {
+                              "id":  "N15",
+                              "agent":  "senior-typescript-game-developer",
+                              "name":  "Senior TypeScript Game Developer",
+                              "stage":  2,
+                              "dependencies":  [
+                                                   "N3"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/stage-2/technical-spec.md"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/stage-2/senior-code-review.md"
+                                                   ],
+                              "description":  "РђСЂС…РёС‚РµРєС‚СѓСЂРЅС‹Р№ СЂРµРІСЊСЋ, TypeScript best practices, design patterns",
+                              "timeout_minutes":  40,
+                              "retryable":  true
+                          },
+                  "N16":  {
+                              "id":  "N16",
+                              "agent":  "git-devops",
+                              "name":  "Git/DevOps",
+                              "stage":  5,
+                              "dependencies":  [
+                                                   "N9",
+                                                   "N10",
+                                                   "N14"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/stage-3/src/",
+                                                      "artifacts/stage-4/test-reports.md",
+                                                      "artifacts/stage-4/perf-report.md",
+                                                      "artifacts/stage-4/phaser-perf-report.md"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/final/deployment/deploy-config.json",
+                                                       "artifacts/final/deployment/.github/workflows/ci.yml",
+                                                       "artifacts/final/deployment/scripts/build.sh",
+                                                       "artifacts/final/deployment/scripts/deploy.sh"
+                                                   ],
+                              "description":  "Git СЂРµРїРѕР·РёС‚РѕСЂРёР№, CI/CD pipeline, build automation",
+                              "timeout_minutes":  20,
+                              "retryable":  true
+                          },
+                  "N17":  {
+                              "id":  "N17",
+                              "agent":  "documentation",
+                              "name":  "Documentation",
+                              "stage":  3,
+                              "dependencies":  [
+                                                   "N4",
+                                                   "N5",
+                                                   "N6",
+                                                   "N7",
+                                                   "N8"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/stage-3/src/",
+                                                      "artifacts/stage-3/ui/",
+                                                      "artifacts/stage-3/levels/",
+                                                      "artifacts/stage-3/audio/",
+                                                      "artifacts/stage-3/assets/"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/final/documentation/README.md",
+                                                       "artifacts/final/documentation/DEVELOPER.md",
+                                                       "artifacts/final/documentation/USER_GUIDE.md",
+                                                       "artifacts/final/documentation/API.md",
+                                                       "artifacts/final/documentation/CHANGELOG.md"
+                                                   ],
+                              "description":  "API documentation, user guides, README, changelog",
+                              "timeout_minutes":  25,
+                              "retryable":  true
+                          },
+                  "N18":  {
+                              "id":  "N18",
+                              "agent":  "localization",
+                              "name":  "Localization",
+                              "stage":  4,
+                              "dependencies":  [
+                                                   "N5",
+                                                   "N17"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/stage-3/ui/",
+                                                      "artifacts/final/documentation/"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/final/localization/i18n-config.json",
+                                                       "artifacts/final/localization/locales/en.json",
+                                                       "artifacts/final/localization/locales/ru.json",
+                                                       "artifacts/final/localization/locales/es.json",
+                                                       "artifacts/final/localization/locales/zh.json",
+                                                       "artifacts/final/localization/locales/ja.json"
+                                                   ],
+                              "description":  "i18n Р°СЂС…РёС‚РµРєС‚СѓСЂР°, РїРµСЂРµРІРѕРґ UI Рё СЃРѕРѕР±С‰РµРЅРёР№",
+                              "timeout_minutes":  30,
+                              "retryable":  true
+                          },
+                  "N19":  {
+                              "id":  "N19",
+                              "agent":  "marketing-launch",
+                              "name":  "Marketing/Launch",
+                              "stage":  5,
+                              "dependencies":  [
+                                                   "N16",
+                                                   "N17",
+                                                   "N18"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/final/deployment/",
+                                                      "artifacts/final/documentation/",
+                                                      "artifacts/final/localization/"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/final/marketing/strategy.md",
+                                                       "artifacts/final/marketing/app-store-metadata.json",
+                                                       "artifacts/final/marketing/landing-page/index.html",
+                                                       "artifacts/final/marketing/social-posts.md",
+                                                       "artifacts/final/marketing/press-kit.md",
+                                                       "artifacts/final/marketing/launch-checklist.md"
+                                                   ],
+                              "description":  "РњР°СЂРєРµС‚РёРЅРі, ASO, РїСЂРѕРјРѕ-РјР°С‚РµСЂРёР°Р»С‹, Р·Р°РїСѓСЃРє",
+                              "timeout_minutes":  35,
+                              "retryable":  true
+                          },
+                  "N20":  {
+                              "id":  "N20",
+                              "agent":  "support",
+                              "name":  "Support",
+                              "stage":  5,
+                              "dependencies":  [
+                                                   "N19"
+                                               ],
+                              "input_artifacts":  [
+                                                      "artifacts/final/marketing/"
+                                                  ],
+                              "output_artifacts":  [
+                                                       "artifacts/support/faq.md",
+                                                       "artifacts/support/knowledge-base.md",
+                                                       "artifacts/support/common-issues.md",
+                                                       "artifacts/support/feedback-report.md"
+                                                   ],
+                              "description":  "User support, community management, feedback",
+                              "timeout_minutes":  15,
+                              "retryable":  true,
+                              "background":  true
+                          },
+                  "learning-agent":  {
+                                         "id":  "learning-agent",
+                                         "agent":  "learning-agent",
+                                         "name":  "Learning Agent",
+                                         "stage":  0,
+                                         "dependencies":  [
+                                                              "stage-1",
+                                                              "stage-2",
+                                                              "stage-3",
+                                                              "stage-4"
+                                                          ],
+                                         "input_artifacts":  [
+                                                                 "logs/artifacts/artifact-chain.json"
+                                                             ],
+                                         "output_artifacts":  [
+                                                                  "knowledge-base/cases/CASE-*.md"
+                                                              ],
+                                         "description":  "РђРЅР°Р»РёР· СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ, СЃРѕС…СЂР°РЅРµРЅРёРµ cases, РѕР±РЅРѕРІР»РµРЅРёРµ knowledge-base",
+                                         "timeout_minutes":  15,
+                                         "retryable":  true,
+                                         "background":  true
+                                     }
+              },
+    "parallel_groups":  {
+                            "stage-3-dev":  {
+                                                "nodes":  [
+                                                              "N4",
+                                                              "N5",
+                                                              "N6",
+                                                              "N7",
+                                                              "N8",
+                                                              "N13",
+                                                              "N17"
+                                                          ],
+                                                "max_concurrent":  6,
+                                                "merge_artifacts":  true,
+                                                "merge_target":  "artifacts/stage-3/game-build/"
+                                            }
+                        },
+    "checkpoints":  {
+                        "enabled":  true,
+                        "dir":  "artifacts/checkpoints",
+                        "auto_save_after":  [
+                                                "stage-1",
+                                                "stage-2",
+                                                "stage-3",
+                                                "stage-4",
+                                                "stage-5"
+                                            ]
+                    },
+    "error_handling":  {
+                           "circuit_breaker":  {
+                                                   "enabled":  true,
+                                                   "threshold":  3,
+                                                   "action":  "halt_pipeline"
+                                               },
+                           "retry":  {
+                                         "enabled":  true,
+                                         "max_attempts":  3,
+                                         "backoff_multiplier":  2
+                                     },
+                           "escalation":  {
+                                              "on_circuit_break":  "notify_and_preserve_state",
+                                              "on_timeout":  "retry_or_skip"
+                                          }
+                       },
+    "knowledge_base":  {
+                           "enabled":  true,
+                           "base_dir":  "knowledge-base",
+                           "learning_agent":  {
+                                                  "agent_file":  "learning-agent.md",
+                                                  "run_after_stages":  [
+                                                                           "stage-1",
+                                                                           "stage-2",
+                                                                           "stage-3",
+                                                                           "stage-4"
+                                                                       ],
+                                                  "timeout_minutes":  15
+                                              },
+                           "pre_task_integration":  {
+                                                        "enabled":  true,
+                                                        "max_success_cases":  3,
+                                                        "max_failure_cases":  3,
+                                                        "search_algorithm":  "knowledge-base/SEARCH.md"
+                                                    },
+                           "case_format":  {
+                                               "success_dir":  "knowledge-base/cases/success",
+                                               "failure_dir":  "knowledge-base/cases/failure",
+                                               "patterns_dir":  "knowledge-base/patterns",
+                                               "anti_patterns_dir":  "knowledge-base/anti-patterns"
+                                           }
+                       }
 }
